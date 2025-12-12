@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Romance - Bibliothèque de Passions Obscures</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --accent: #c41e3a;
+            --accent-dark: #8b1629;
+            --text-light: #e0e0e0;
+            --text-muted: #999;
+            --card-bg: #151520;
+            --border-color: #2a2a35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .navbar {
+            background: rgba(10, 10, 15, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent) !important;
+            text-decoration: none;
+        }
+
+        .navbar-brand:hover {
+            color: var(--accent-dark) !important;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23151520" width="1200" height="600"/><circle fill="%23c41e3a" opacity="0.1" cx="300" cy="150" r="200"/><circle fill="%23c41e3a" opacity="0.05" cx="900" cy="450" r="300"/></svg>');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn-custom {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .btn-custom:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(196, 30, 58, 0.4);
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .search-input {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .search-input:focus {
+            background: var(--card-bg);
+            border-color: var(--accent);
+            color: var(--text-light);
+            box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.25);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Story Cards */
+        .story-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+            border-color: var(--accent);
+        }
+
+        .story-cover {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .story-author {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .story-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .story-stats i {
+            margin-right: 0.3rem;
+            color: var(--accent);
+        }
+
+        .story-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(196, 30, 58, 0.2);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--accent);
+        }
+
+        /* Categories */
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .category-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-light);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-body {
+            color: var(--text-light);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" th:href="@{/}">
+                <i class="bi bi-book-half"></i> Dark Romance
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#accueil">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#histoires">Histoires</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">Catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#a-propos">À propos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="accueil">
+        <div class="container">
+            <h1 class="hero-title">Plongez dans l'Obscurité</h1>
+            <p class="hero-subtitle">Découvrez des histoires de passion intense, de désir interdit et d'amour dangereux</p>
+            <a href="#histoires" class="btn btn-custom btn-lg">
+                <i class="bi bi-book-open"></i> Explorer les Histoires
+            </a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <div class="container">
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" class="form-control search-input" id="searchInput" 
+                       placeholder="Rechercher une histoire, un auteur..." 
+                       th:attr="oninput=|filterStories()|">
+                <button class="btn btn-custom" type="button" onclick="filterStories()">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filter" id="categoryFilter">
+            <button class="category-btn active" onclick="filterByCategory('all')">Tout</button>
+            <button class="category-btn" onclick="filterByCategory('mafia')">Mafia</button>
+            <button class="category-btn" onclick="filterByCategory('bully')">Bully Romance</button>
+            <button class="category-btn" onclick="filterByCategory('enemies')">Ennemis à Amants</button>
+            <button class="category-btn" onclick="filterByCategory('psychologique')">Psychologique</button>
+            <button class="category-btn" onclick="filterByCategory('fantasy')">Fantasy Dark</button>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Chargement...</span>
+            </div>
+        </div>
+
+        <!-- Stories Grid -->
+        <div class="row" id="storiesContainer">
+            <!-- Stories will be dynamically loaded here -->
+            <div class="col-md-6 col-lg-4" th:each="story : ${stories}" th:remove="tag">
+                <div class="story-card" th:attr="data-title=${story.title}, data-author=${story.author}, data-category=${story.category}, onclick=|openStoryModal('${story.id}')|">
+                    <div class="story-cover" th:style="'background: linear-gradient(135deg, #c41e3a 0%, #8b1629 100%);'">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h3 class="story-title" th:text="${story.title}">Titre de l'histoire</h3>
+                    <p class="story-author">
+                        <i class="bi bi-person"></i> <span th:text="${story.author}">Auteur</span>
+                    </p>
+                    <p class="story-description" th:text="${story.description}">
+                        Description de l'histoire passionnante qui vous plongera dans un monde sombre et envoûtant...
+                    </p>
+                    <div class="story-tags">
+                        <span class="tag" th:each="tag : ${story.tags}" th:text="${tag}">Tag</span>
+                    </div>
+                    <div class="story-meta">
+                        <div class="story-stats">
+                            <span><i class="bi bi-eye"></i> <span th:text="${story.views}">1.2K</span></span>
+                            <span><i class="bi bi-heart"></i> <span th:text="${story.likes}">345</span></span>
+                            <span><i class="bi bi-chat"></i> <span th:text="${story.comments}">89</span></span>
+                        </div>
+                        <span class="badge bg-danger" th:text="${story.category}">Mafia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div class="modal fade" id="storyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalStoryTitle">Titre de l'histoire</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalStoryContent">
+                    <!-- Story content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-custom" onclick="readFullStory()">
+                        <i class="bi bi-book-open"></i> Lire l'histoire complète
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Dark Romance. Tous droits réservés.</p>
+            <p>Plongez dans les passions les plus sombres et intenses</p>
+            <div class="mt-3">
+                <a href="#" class="text-danger me-3"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-danger me-3"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-danger"><i class="bi bi-facebook"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sample Stories Data (would normally come from Thymeleaf/backend)
+        const storiesData = [
+            {
+                id: 1,
+                title: "L'Ombre du Désir",
+                author: "Sarah Dark",
+                category: "mafia",
+                description: "Dans les rues sombres de New York, Elena rencontre le mystérieux don de la mafia. Une passion interdite s'enflamme, mais à quel prix?",
+                views: "12.5K",
+                likes: "3.2K",
+                comments: "456",
+                tags: ["Mafia", "Interdit", "Passion"],
+                chapters: 25,
+                rating: 4.8,
+                content: "Chapitre 1: La Rencontre..."
+            },
+            {
+                id: 2,
+                title: "Le Garçon de la Bande",
+                author: "James Night",
+                category: "bully",
+                description: "Lily transférée dans une nouvelle école tombe sous le charme destructeur du leader de la bande. Amour ou haine? Elle ne peut plus faire la différence.",
+                views: "8.9K",
+                likes: "2.1K",
+                comments: "312",
+                tags: ["Bully", "High School", "Angst"],
+                chapters: 18,
+                rating: 4.6,
+                content: "Chapitre 1: Nouvelle École..."
+            },
+            {
+                id: 3,
+                title: "Ennemis Éternels",
+                author: "Mia Crimson",
+                category: "enemies",
+                description: "Deux familles rivales, deux héritiers destinés à se détester. Mais quand la haine se transforme en désir brûlant, tout devient possible.",
+                views: "15.3K",
+                likes: "4.5K",
+                comments: "678",
+                tags: ["Ennemis", "Familles Rivales", "Désir"],
+                chapters: 30,
+                rating: 4.9,
+                content: "Chapitre 1: La Rivalité..."
+            },
+            {
+                id: 4,
+                title: "Labyrinthe de l'Âme",
+                author: "Dr. Black",
+                category: "psychologique",
+                description: "Un thriller psychologique où les limites entre la réalité et la folie s'estompent. Une histoire troublante qui vous hantera longtemps.",
+                views: "9.7K",
+                likes: "2.8K",
+                comments: "423",
+                tags: ["Psychologique", "Thriller", "Sombre"],
+                chapters: 22,
+                rating: 4.7,
+                content: "Chapitre 1: Le Commencement..."
+            },
+            {
+                id: 5,
+                title: "Les Ombres Magiques",
+                author: "Elara Shadow",
+                category: "fantasy",
+                description: "Dans un monde où la magie noire règne, une sorcière tombe amoureuse de son pire ennemi, un chasseur de sorcières. Le destin les unit malgré tout.",
+                views: "11.2K",
+                likes: "3.4K",
+                comments: "521",
+                tags: ["Fantasy", "Magie", "Destin"],
+                chapters: 27,
+                rating: 4.8,
+                content: "Chapitre 1: Le Sortilège..."
+            },
+            {
+                id: 6,
+                title: "Le Roi du Crime",
+                author: "Sarah Dark",
+                category: "mafia",
+                description: "Isabella devient la propriété involontaire du roi incontesté du crime organisé. Dans ce monde dangereux, l'amour est le plus grand crime.",
+                views: "13.8K",
+                likes: "3.9K",
+                comments: "567",
+                tags: ["Mafia", "Captivité", "Pouvoir"],
+                chapters: 32,
+                rating: 4.9,
+                content: "Chapitre 1: La Capture..."
+            }
+        ];
+
+        // Initialize stories on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStories(storiesData);
+        });
+
+        // Render stories function
+        function renderStories(stories) {
+            const container = document.getElementById('storiesContainer');
+            container.innerHTML = '';
+
+            if (stories.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Aucune histoire trouvée.</p></div>';
+                return;
+            }
+
+            stories.forEach(story => {
+                const storyCard = createStoryCard(story);
+                container.appendChild(storyCard);
+            });
+        }
+
+        // Create story card element
+        function createStoryCard(story) {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4';
+
+            const tagsHTML = story.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+            col.innerHTML = `
+                <div class="story-card" data-title="${story.title.toLowerCase()}" 
+                     data-author="${story.author.toLowerCase()}" 
+                     data-category="${story.category}"
+                     onclick="openStoryModal(${story.id})">
+                    <div class="story-cover">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h3 class="story-title">${story.title}</h3>
+                    <p class="story-author">
+                        <i class="bi bi-person"></i> ${story.author}
+                    </p>
+                    <p class="story-description">${story.description}</p>
+                    <div class="story-tags">
+                        ${tagsHTML}
+                    </div>
+                    <div class="story-meta">
+                        <div class="story-stats">
+                            <span><i class="bi bi-eye"></i> ${story.views}</span>
+                            <span><i class="bi bi-heart"></i> ${story.likes}</span>
+                            <span><i class="bi bi-chat"></i> ${story.comments}</span>
+                        </div>
+                        <span class="badge bg-danger">${getCategoryName(story.category)}</span>
+                    </div>
+                </div>
+            `;
+
+            return col;
+        }
+
+        // Get category display name
+        function getCategoryName(category) {
+            const names = {
+                'mafia': 'Mafia',
+                'bully': 'Bully Romance',
+                'enemies': 'Ennemis à Amants',
+                'psychologique': 'Psychologique',
+                'fantasy': 'Fantasy Dark'
+            };
+            return names[category] || category;
+        }
+
+        // Filter stories by search
+        function filterStories() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.story-card');
+            
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const author = card.getAttribute('data-author');
+                
+                if (title.includes(searchTerm) || author.includes(searchTerm)) {
+                    card.closest('.col-md-6').style.display = '';
+                } else {
+                    card.closest('.col-md-6').style.display = 'none';
+                }
+            });
+        }
+
+        // Filter by category
+        let currentCategory = 'all';
+        
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter stories
+            const cards = document.querySelectorAll('.story-card');
+            cards.forEach(card => {
+                const storyCategory = card.getAttribute('data-category');
+                const parent = card.closest('.col-md-6');
+                
+                if (category === 'all' || storyCategory === category) {
+                    parent.style.display = '';
+                } else {
+                    parent.style.display = 'none';
+                }
+            });
+        }
+
+        // Open story modal
+        function openStoryModal(storyId) {
+            const story = storiesData.find(s => s.id === storyId);
+            if (!story) return;
+
+            document.getElementById('modalStoryTitle').textContent = story.title;
+            document.getElementById('modalStoryContent').innerHTML = `
+                <div class="mb-3">
+                    <p class="text-muted"><i class="bi bi-person"></i> <strong>Auteur:</strong> ${story.author}</p>
+                    <p class="text-muted"><i class="bi bi-list-ol"></i> <strong>Chapitres:</strong> ${story.chapters}</p>
+                    <p class="text-muted"><i class="bi bi-star-fill text-warning"></i> <strong>Note:</strong> ${story.rating}/5.0</p>
+                    <p class="text-muted"><i class="bi bi-eye"></i> <strong>Vues:</strong> ${story.views} | 
+                       <i class="bi bi-heart"></i> <strong>J'aime:</strong> ${story.likes} | 
+                       <i class="bi bi-chat"></i> <strong>Commentaires:</strong> ${story.comments}</p>
+                </div>
+                <hr class="my-3" style="border-color: var(--border-color);">
+                <h6 class="mb-3">Description:</h6>
+                <p class="mb-3">${story.description}</p>
+                <div class="story-tags mb-3">
+                    ${story.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+                <hr class="my-3" style="border-color: var(--border-color);">
+                <h6 class="mb-3">Extrait:</h6>
+                <p class="text-muted">${story.content}</p>
+            `;
+
+            // Store current story ID for read function
+            document.getElementById('storyModal').setAttribute('data-story-id', storyId);
+
+            const modal = new bootstrap.Modal(document.getElementById('storyModal'));
+            modal.show();
+        }
+
+        // Read full story (placeholder)
+        function readFullStory() {
+            const storyId = document.getElementById('storyModal').getAttribute('data-story-id');
+            const story = storiesData.find(s => s.id == storyId);
+            
+            alert(`Redirection vers la lecture complète de "${story.title}"\n\nDans une version complète, cela redirigerait vers la page de lecture avec tous les chapitres.`);
+            
+            // In a real app, this would be: window.location.href = '/story/' + storyId;
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
